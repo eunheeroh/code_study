@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>코드깨비 CodeGGaebi — AI 튜터 기반 웹 복습 도우미</title>
+  <meta name="description" content="코딩 경험 제로인 30~40대 성인 학습자를 위한, 일상 비유로 설명하는 AI 튜터 기반 웹 복습 도우미">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <!-- 저장된 화면 모드를 렌더링 전에 적용 (깜빡임 방지) -->
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('codeggaebi-theme');
+        if (saved === 'dark' || saved === 'light') {
+          document.documentElement.setAttribute('data-theme', saved);
+        }
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+
+  <!-- ============================================
+       1. GLOBAL NAV
+  ============================================ -->
+  <header id="app-header">
+    <div class="header-inner">
+      <div class="logo-area">
+        <div class="logo-icon">🧙</div>
+        <div class="logo-text">
+          코드깨비
+          <small>CodeGGaebi</small>
+        </div>
+      </div>
+      <div class="header-controls">
+        <button id="lang-toggle" class="lang-toggle" type="button" aria-label="Switch to English">EN</button>
+        <button id="theme-toggle" class="theme-toggle" aria-label="밝은/어두운 모드 전환" title="밝은/어두운 모드 전환">🌙</button>
+        <button id="mobile-menu-toggle" aria-label="메뉴 열기">☰</button>
+        <nav id="main-nav" aria-label="주요 메뉴">
+          <button id="nav-home" class="nav-active" data-target="home-section" data-i18n="nav.home">홈</button>
+          <button id="nav-tutor" data-target="tutor-section" data-i18n="nav.tutor">AI 튜터</button>
+          <button id="nav-editor" data-target="editor-section" data-i18n="nav.editor">코드 실습</button>
+          <button id="nav-quiz" data-target="quiz-section" data-i18n="nav.quiz">복습 퀴즈</button>
+          <button id="nav-dashboard" data-target="dashboard-section" data-i18n="nav.dashboard">대시보드</button>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============================================
+       2. MAIN
+  ============================================ -->
+  <main id="app-main">
+
+    <!-- ── 2-0. 홈 / 랜딩 (제품 소개) ── -->
+    <section id="home-section" class="section-active" aria-label="홈">
+
+      <!-- HERO -->
+      <div class="home-hero">
+        <canvas id="code-rain" class="code-rain" aria-hidden="true"></canvas>
+        <div class="home-hero-inner">
+          <span class="home-badge" data-i18n="home.badge">✨ AI 기반 코딩 학습 도우미</span>
+          <h1 class="home-title" data-i18n-html="home.title">코딩이 처음이어도<br><span class="home-title-accent">마법처럼 쉽게.</span></h1>
+          <p class="home-sub" data-i18n-html="home.sub">일상의 비유로 설명하는 AI 튜터와 함께<br>HTML · CSS · JavaScript · 파이썬을 부담 없이 배워요.</p>
+          <div class="home-cta-group">
+            <button class="home-cta-primary" data-goto="tutor-section" data-i18n="home.cta.start">무료로 시작하기 →</button>
+            <button class="home-cta-ghost" data-scroll="home-pricing" data-i18n="home.cta.pricing">요금제 보기</button>
+          </div>
+          <div class="home-trust" data-i18n="home.trust">설치 없이 웹에서 바로 · 30~40대 성인 학습자를 위해 설계</div>
+        </div>
+      </div>
+
+      <!-- FEATURES -->
+      <div class="home-block">
+        <h2 class="home-h2" data-i18n="home.features.h2">배우고, 써보고, 확인하고, 성장을 눈으로.</h2>
+        <p class="home-lead" data-i18n="home.features.lead">학습에 필요한 모든 것을 한 곳에 담았어요.</p>
+        <div class="home-feature-grid">
+          <button class="home-feature" data-goto="tutor-section">
+            <div class="home-feature-icon">🧙</div>
+            <h3 data-i18n="feat.tutor.title">AI 비유 튜터</h3>
+            <p data-i18n="feat.tutor.desc">어려운 개념을 택배 상자·자판기 같은 일상 비유로 3단계로 설명해요.</p>
+          </button>
+          <button class="home-feature" data-goto="editor-section">
+            <div class="home-feature-icon">💻</div>
+            <h3 data-i18n="feat.editor.title">실시간 코드 실습</h3>
+            <p data-i18n="feat.editor.desc">HTML·CSS·JS를 직접 쓰고 즉시 미리보기와 콘솔로 결과를 확인해요.</p>
+          </button>
+          <button class="home-feature" data-goto="quiz-section">
+            <div class="home-feature-icon">📝</div>
+            <h3 data-i18n="feat.quiz.title">복습 퀴즈</h3>
+            <p data-i18n="feat.quiz.desc">10개 주제 50문항으로 배운 내용을 점검하고, 틀리면 AI가 다시 설명해요.</p>
+          </button>
+          <button class="home-feature" data-goto="dashboard-section">
+            <div class="home-feature-icon">📊</div>
+            <h3 data-i18n="feat.dash.title">학습 대시보드</h3>
+            <p data-i18n="feat.dash.desc">학습 시간·연속 기록·이해도·배지로 나의 성장을 한눈에 확인해요.</p>
+          </button>
+        </div>
+      </div>
+
+      <!-- PRICING -->
+      <div class="home-block home-pricing" id="home-pricing">
+        <h2 class="home-h2" data-i18n="home.pricing.h2">합리적인 요금제</h2>
+        <p class="home-lead" data-i18n="home.pricing.lead">부담 없이 시작하고, 필요할 때 업그레이드하세요.</p>
+        <div class="home-plan-grid">
+          <div class="home-plan">
+            <div class="home-plan-name" data-i18n="plan.free.name">무료</div>
+            <div class="home-plan-price" data-i18n-html="plan.free.price">₩0<span>/월</span></div>
+            <p class="home-plan-desc" data-i18n="plan.free.desc">가볍게 시작하는 분께</p>
+            <ul class="home-plan-features">
+              <li data-i18n="plan.free.f1">AI 비유 튜터 체험</li>
+              <li data-i18n="plan.free.f2">코드 실습 편집기</li>
+              <li data-i18n="plan.free.f3">기본 복습 퀴즈</li>
+              <li data-i18n="plan.free.f4">학습 기록 저장</li>
+            </ul>
+            <button class="home-plan-btn home-plan-btn-free" data-goto="tutor-section" data-i18n="plan.free.btn">무료로 시작</button>
+          </div>
+          <div class="home-plan home-plan-featured">
+            <div class="home-plan-tag" data-i18n="plan.pro.tag">가장 인기</div>
+            <div class="home-plan-name" data-i18n="plan.pro.name">프로</div>
+            <div class="home-plan-price" data-i18n-html="plan.pro.price">₩9,900<span>/월</span></div>
+            <p class="home-plan-desc" data-i18n="plan.pro.desc">제대로 배우고 싶은 분께</p>
+            <ul class="home-plan-features">
+              <li data-i18n-html="plan.pro.f1"><strong>전체 10개 주제</strong> 무제한 학습</li>
+              <li data-i18n-html="plan.pro.f2">무제한 퀴즈 &amp; 오답 복습</li>
+              <li data-i18n="plan.pro.f3">주간 학습 리포트</li>
+              <li data-i18n="plan.pro.f4">학습 기록 엑셀 내보내기</li>
+              <li data-i18n-html="plan.pro.f5">성취 배지 &amp; 우선 지원</li>
+            </ul>
+            <button class="home-plan-btn home-plan-btn-pro" id="subscribe-pro-btn" data-i18n="plan.pro.btn">프로 시작하기</button>
+          </div>
+        </div>
+        <p class="home-pricing-note" data-i18n="home.pricing.note">언제든 해지할 수 있어요 · 부가세 포함</p>
+      </div>
+
+      <!-- TESTIMONIALS -->
+      <div class="home-block">
+        <h2 class="home-h2" data-i18n="home.reviews.h2">먼저 배운 분들의 이야기</h2>
+        <div class="home-review-grid">
+          <figure class="home-review">
+            <blockquote data-i18n="rev1.q">"용어만 나오면 막막했는데, 비유로 들으니 머리에 쏙쏙 들어와요."</blockquote>
+            <figcaption data-i18n="rev1.c">김○○ · 42세 · 직장인</figcaption>
+          </figure>
+          <figure class="home-review">
+            <blockquote data-i18n="rev2.q">"직접 코드를 써보고 바로 결과를 보니 재미있어서 계속하게 돼요."</blockquote>
+            <figcaption data-i18n="rev2.c">이○○ · 38세 · 자영업</figcaption>
+          </figure>
+          <figure class="home-review">
+            <blockquote data-i18n="rev3.q">"퀴즈로 확인하고 틀린 걸 다시 배우니 진짜로 남아요."</blockquote>
+            <figcaption data-i18n="rev3.c">박○○ · 45세 · 주부</figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <!-- FINAL CTA -->
+      <div class="home-final-cta">
+        <h2 data-i18n="home.final.h2">오늘, 첫 줄의 코드를 써보세요.</h2>
+        <p data-i18n="home.final.p">지금 시작하면 오늘부터 학습 기록이 쌓입니다.</p>
+        <button class="home-cta-primary" data-goto="tutor-section" data-i18n="home.final.cta">무료로 시작하기 →</button>
+      </div>
+    </section>
+
+    <!-- ── 2-1. AI 비유 튜터 (Deep Indigo) ── -->
+    <section id="tutor-section" class="section-hidden" aria-label="AI 비유 튜터">
+
+      <div class="sub-nav">
+        <div class="sub-nav-inner">
+          <span class="sub-nav-title" data-i18n="sub.tutor.title">AI 비유 튜터</span>
+          <div class="sub-nav-links">
+            <a href="#" id="subnav-tutor-help" data-i18n="sub.tutor.help">사용법</a>
+            <a href="#" id="subnav-tutor-topics" data-i18n="sub.tutor.topics">주제 목록</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="tutor-topic-bar" role="tablist" aria-label="학습 주제">
+        <button id="topic-html" class="topic-active" data-i18n="topic.html">HTML 기초</button>
+        <button id="topic-css" data-i18n="topic.css">CSS 스타일링</button>
+        <button id="topic-js" data-i18n="topic.js">JavaScript</button>
+        <button id="topic-layout" data-i18n="topic.layout">레이아웃</button>
+        <button id="topic-form" data-i18n="topic.form">폼 & 입력</button>
+      </div>
+
+      <div class="tutor-chat-wrap">
+        <div class="tutor-chat-area" id="tutor-chat-area" role="log" aria-label="대화 내용">
+          <article class="chat-message-ai" id="msg-welcome">
+            <div class="chat-avatar">🧙</div>
+            <div class="chat-bubble-ai">
+              안녕하세요! 저는 <strong>코드깨비</strong>예요.<br>
+              코딩 개념이 헷갈릴 때 편하게 물어보세요. 일상의 비유로 쉽게 설명해 드릴게요!
+              <div class="hint-steps">
+                <span class="hint-step hint-current">1단계 · 비유 힌트</span>
+                <span class="hint-step">2단계 · 코드 힌트</span>
+                <span class="hint-step">3단계 · 정답 설명</span>
+              </div>
+            </div>
+          </article>
+          <article class="chat-message-user" id="msg-sample-user">
+            <div class="chat-bubble-user">margin이랑 padding 차이가 뭐예요?</div>
+          </article>
+          <article class="chat-message-ai" id="msg-sample-ai-reply">
+            <div class="chat-avatar">🧙</div>
+            <div class="chat-bubble-ai">
+              좋은 질문이에요! 택배 상자를 떠올려 보세요.<br><br>
+              <strong>padding</strong>은 상자 안의 뽁뽁이(내부 여백)이고,
+              <strong>margin</strong>은 상자와 상자 사이 거리(외부 여백)예요.<br><br>
+              그러면 <strong>border</strong>는 뭘까요?
+            </div>
+          </article>
+        </div>
+        <div class="tutor-input-area">
+          <textarea id="tutor-input" placeholder="궁금한 코딩 개념을 물어보세요..." data-i18n-ph="tutor.input.ph" rows="1" aria-label="질문 입력"></textarea>
+          <button id="tutor-send-btn" aria-label="질문 보내기" data-i18n="tutor.send">보내기</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 2-2. 코드 실습 환경 (True Black) ── -->
+    <section id="editor-section" class="section-hidden" aria-label="코드 실습 환경">
+
+      <div class="sub-nav">
+        <div class="sub-nav-inner">
+          <span class="sub-nav-title" data-i18n="sub.editor.title">코드 실습</span>
+          <div class="sub-nav-links">
+            <a href="#" id="subnav-editor-templates" data-i18n="sub.editor.templates">템플릿</a>
+            <a href="#" id="subnav-editor-examples" data-i18n="sub.editor.examples">예제 코드</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="editor-toolbar">
+        <div class="editor-toolbar-inner">
+          <div class="editor-tab-bar" role="tablist" aria-label="코드 언어 선택">
+            <button id="tab-html" class="tab-active" role="tab" aria-selected="true">HTML</button>
+            <button id="tab-css" role="tab" aria-selected="false">CSS</button>
+            <button id="tab-js" role="tab" aria-selected="false">JS</button>
+          </div>
+          <div class="editor-actions">
+            <button id="editor-run-btn" data-i18n="editor.run">▶ 실행</button>
+            <button id="editor-reset-btn" data-i18n="editor.reset">초기화</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="editor-split-pane">
+        <div class="editor-code-panel" id="editor-code-panel">
+          <div class="editor-code-scroll">
+            <div class="editor-gutter" id="editor-gutter" aria-hidden="true">1</div>
+            <div class="editor-textareas">
+              <textarea id="code-input-html" aria-label="HTML 코드 입력" spellcheck="false" wrap="off">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;내 첫 페이지&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;안녕하세요!&lt;/h1&gt;
+  &lt;p&gt;코드깨비와 함께 코딩을 배워봐요.&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</textarea>
+              <textarea id="code-input-css" class="section-hidden" aria-label="CSS 코드 입력" spellcheck="false" wrap="off">/* CSS 스타일을 작성하세요 */
+h1 {
+  color: #0066cc;
+}
+p {
+  font-size: 18px;
+}</textarea>
+              <textarea id="code-input-js" class="section-hidden" aria-label="JavaScript 코드 입력" spellcheck="false" wrap="off">// JavaScript 코드를 작성하세요
+console.log("안녕하세요, 코드깨비!");</textarea>
+            </div>
+          </div>
+          <div class="editor-statusbar">
+            <span class="status-lang" id="editor-status-lang">HTML</span>
+            <span class="status-pos" id="editor-status-pos">Ln 1, Col 1</span>
+          </div>
+        </div>
+        <div class="editor-preview-panel" id="editor-preview-panel">
+          <div class="preview-label" data-i18n="preview.label">미리보기</div>
+          <iframe id="code-preview" title="코드 실행 결과" sandbox="allow-scripts"></iframe>
+          <div class="editor-console" id="editor-console">
+            <div class="console-header">
+              <span class="console-title">콘솔 <span class="console-dot" id="console-dot"></span></span>
+              <button id="console-clear-btn" type="button">지우기</button>
+            </div>
+            <div class="console-body" id="console-body">
+              <div class="console-empty">console.log() 출력이 여기에 표시됩니다.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 2-3. 복습 퀴즈 (Warm Parchment) ── -->
+    <section id="quiz-section" class="section-hidden" aria-label="복습 퀴즈">
+
+      <div class="sub-nav">
+        <div class="sub-nav-inner">
+          <span class="sub-nav-title" data-i18n="sub.quiz.title">복습 퀴즈</span>
+          <div class="sub-nav-links">
+            <a href="#" id="subnav-quiz-history" data-i18n="sub.quiz.history">풀이 기록</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="quiz-hero">
+        <h2 data-i18n-html="quiz.hero.h2">오늘 배운 개념,<br>퀴즈로 확인해 보세요.</h2>
+        <p data-i18n="quiz.hero.p">틀린 문제는 AI 튜터가 다시 설명해 드려요.</p>
+      </div>
+
+      <div class="quiz-content">
+        <div class="quiz-topic-grid" id="quiz-topic-grid">
+          <div class="quiz-topic-card" id="quiz-topic-html-basics">
+            <div class="topic-icon">🏗️</div>
+            <div class="topic-name">HTML5 기본 구조</div>
+            <div class="topic-count">5문항 · 집 짓기 비유</div>
+          </div>
+          <div class="quiz-topic-card" id="quiz-topic-html-semantic">
+            <div class="topic-icon">🏷️</div>
+            <div class="topic-name">시멘틱 태그</div>
+            <div class="topic-count">5문항 · 건물 용도별 공간</div>
+          </div>
+          <div class="quiz-topic-card" id="quiz-topic-css-selector">
+            <div class="topic-icon">🎨</div>
+            <div class="topic-name">CSS 선택자</div>
+            <div class="topic-count">5문항 · 인테리어 비유</div>
+          </div>
+          <div class="quiz-topic-card" id="quiz-topic-css-box">
+            <div class="topic-icon">📦</div>
+            <div class="topic-name">CSS 박스 모델</div>
+            <div class="topic-count">5문항 · 택배 상자 비유</div>
+          </div>
+          <div class="quiz-topic-card" id="quiz-topic-html-form">
+            <div class="topic-icon">☕</div>
+            <div class="topic-name">form 양식 태그</div>
+            <div class="topic-count">5문항 · 카페 주문서</div>
+          </div>
+          <div class="quiz-topic-card" id="quiz-topic-js-variable">
+            <div class="topic-icon">📌</div>
+            <div class="topic-name">JS 변수·함수·이벤트</div>
+            <div class="topic-count">5문항 · 자판기·초인종 비유</div>
+          </div>
+          <div class="quiz-topic-card" id="quiz-topic-layout">
+            <div class="topic-icon">📐</div>
+            <div class="topic-name">Flexbox 레이아웃</div>
+            <div class="topic-count">5문항 · 냉장고 자석 비유</div>
+          </div>
+          <div class="quiz-topic-card" id="quiz-topic-py-variable">
+            <div class="topic-icon">🐍</div>
+            <div class="topic-name">파이썬 변수와 자료형</div>
+            <div class="topic-count">5문항 · int/float/str</div>
+          </div>
+          <div class="quiz-topic-card" id="quiz-topic-py-operator">
+            <div class="topic-icon">🔢</div>
+            <div class="topic-name">파이썬 산술 연산자</div>
+            <div class="topic-count">5문항 · // % ** 연산</div>
+          </div>
+          <div class="quiz-topic-card" id="quiz-topic-py-io">
+            <div class="topic-icon">⌨️</div>
+            <div class="topic-name">파이썬 입력과 출력</div>
+            <div class="topic-count">5문항 · input/print/f-string</div>
+          </div>
+        </div>
+
+        <article id="quiz-active-area" class="section-hidden">
+          <div class="quiz-progress-bar">
+            <div class="quiz-progress-track">
+              <div class="quiz-progress-fill" id="quiz-progress-fill" style="width: 40%;"></div>
+            </div>
+            <span class="quiz-progress-text" id="quiz-progress-text">2 / 5</span>
+          </div>
+          <div class="quiz-question" id="quiz-question">
+            <span class="quiz-question-type" id="quiz-question-type">4지선다</span>
+            <p class="quiz-question-text" id="quiz-question-text">
+              HTML에서 &lt;p&gt; 태그의 역할은 무엇일까요?
+            </p>
+          </div>
+          <div class="quiz-options" id="quiz-options">
+            <div class="quiz-option" id="quiz-option-1"><span class="quiz-option-marker">①</span><span>제목을 표시한다</span></div>
+            <div class="quiz-option" id="quiz-option-2"><span class="quiz-option-marker">②</span><span>문단(paragraph)을 표시한다</span></div>
+            <div class="quiz-option" id="quiz-option-3"><span class="quiz-option-marker">③</span><span>이미지를 삽입한다</span></div>
+            <div class="quiz-option" id="quiz-option-4"><span class="quiz-option-marker">④</span><span>링크를 연결한다</span></div>
+          </div>
+          <input id="quiz-blank-input" class="section-hidden" type="text" placeholder="정답을 입력하세요...">
+          <div class="quiz-feedback quiz-feedback-correct section-hidden" id="quiz-feedback-correct">🎉 정답이에요! 잘하셨어요.</div>
+          <div class="quiz-feedback quiz-feedback-wrong section-hidden" id="quiz-feedback-wrong">
+            아쉽지만 틀렸어요. 정답은 <strong id="quiz-correct-answer">②번</strong>이에요.
+            <br><br>
+            <button id="quiz-ask-tutor-btn">이 개념 다시 배우기 →</button>
+          </div>
+          <div class="quiz-action-bar">
+            <button id="quiz-next-btn">다음 문제</button>
+            <button id="quiz-submit-btn">정답 확인</button>
+          </div>
+        </article>
+
+        <article id="quiz-result-area" class="section-hidden">
+          <div class="result-score" id="result-score">80</div>
+          <div class="result-label">점</div>
+          <div class="result-detail" id="result-detail">5문항 중 4문항 정답 · 정답률 80%</div>
+          <div class="result-actions">
+            <button id="result-retry-btn">다시 풀기</button>
+            <button id="result-to-tutor-btn">틀린 문제 복습하기</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ── 2-4. 학습 대시보드 (Clean White) ── -->
+    <section id="dashboard-section" class="section-hidden" aria-label="학습 대시보드">
+
+      <div class="sub-nav">
+        <div class="sub-nav-inner">
+          <span class="sub-nav-title" data-i18n="sub.dash.title">대시보드</span>
+          <div class="sub-nav-links">
+            <a href="#" id="subnav-dash-weekly" data-i18n="sub.dash.weekly">주간 리포트</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="dash-hero">
+        <h2 data-i18n-html="dash.hero.h2">나의 학습 현황을<br>한눈에 확인하세요.</h2>
+        <p data-i18n="dash.hero.p">꾸준히 하면 코딩이 마법처럼 쉬워져요.</p>
+      </div>
+
+      <div class="dashboard-content">
+        <div class="dashboard-stats-grid" id="dashboard-stats-grid">
+          <div class="stat-card" id="stat-total-time">
+            <div class="stat-label">총 학습 시간</div>
+            <div class="stat-value">0h</div>
+            <div class="stat-sub">오늘 접속 0회</div>
+          </div>
+          <div class="stat-card" id="stat-quiz-avg">
+            <div class="stat-label">퀴즈 평균</div>
+            <div class="stat-value">-</div>
+            <div class="stat-sub">최근 0회 기준</div>
+          </div>
+          <div class="stat-card" id="stat-streak">
+            <div class="stat-label">연속 학습</div>
+            <div class="stat-value">0일</div>
+            <div class="stat-sub">최고 기록 0일</div>
+          </div>
+          <div class="stat-card" id="stat-completed">
+            <div class="stat-label">완료 주제</div>
+            <div class="stat-value">0/10</div>
+            <div class="stat-sub">전체 10개 중</div>
+          </div>
+        </div>
+
+        <h3 class="dashboard-section-title" id="dashboard-comprehension-title">주제별 이해도</h3>
+        <div class="topic-progress-list" id="topic-progress-list">
+          <div class="topic-progress-item" id="progress-html">
+            <div class="topic-progress-label"><span>HTML 기초</span><span>0%</span></div>
+            <div class="topic-progress-track"><div class="topic-progress-fill progress-low" style="width: 0%;"></div></div>
+          </div>
+          <div class="topic-progress-item" id="progress-css">
+            <div class="topic-progress-label"><span>CSS 스타일링</span><span>0%</span></div>
+            <div class="topic-progress-track"><div class="topic-progress-fill progress-low" style="width: 0%;"></div></div>
+          </div>
+          <div class="topic-progress-item" id="progress-js">
+            <div class="topic-progress-label"><span>JavaScript / Python</span><span>0%</span></div>
+            <div class="topic-progress-track"><div class="topic-progress-fill progress-low" style="width: 0%;"></div></div>
+          </div>
+          <div class="topic-progress-item" id="progress-layout">
+            <div class="topic-progress-label"><span>Flexbox 레이아웃</span><span>0%</span></div>
+            <div class="topic-progress-track"><div class="topic-progress-fill progress-low" style="width: 0%;"></div></div>
+          </div>
+        </div>
+
+        <h3 class="dashboard-section-title" id="dashboard-badge-title">성취 배지</h3>
+        <div class="badge-grid" id="badge-grid">
+          <div class="badge-card" id="badge-first-login"><div class="badge-icon">🌟</div><div class="badge-name">첫 발걸음</div><div class="badge-desc">처음 접속 완료</div></div>
+          <div class="badge-card" id="badge-3day-streak"><div class="badge-icon">🔥</div><div class="badge-name">3일 연속</div><div class="badge-desc">3일 연속 학습</div></div>
+          <div class="badge-card" id="badge-quiz-perfect"><div class="badge-icon">💯</div><div class="badge-name">만점왕</div><div class="badge-desc">퀴즈 만점 달성</div></div>
+          <div class="badge-card badge-locked" id="badge-7day-streak"><div class="badge-icon">🏆</div><div class="badge-name">7일 연속</div><div class="badge-desc">7일 연속 학습</div></div>
+          <div class="badge-card badge-locked" id="badge-all-topics"><div class="badge-icon">👑</div><div class="badge-name">마스터</div><div class="badge-desc">전체 주제 완료</div></div>
+        </div>
+
+        <div class="dashboard-export" id="dashboard-export">
+          <button id="export-xlsx-btn" data-i18n="dash.export">학습 기록 엑셀 다운로드</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================
+       MODAL — 메뉴 항목 클릭 시 내용 표시
+  ============================================ -->
+  <div id="app-modal" class="modal-overlay section-hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-box" role="document">
+      <div class="modal-header">
+        <h3 id="modal-title" class="modal-title"></h3>
+        <button id="modal-close" class="modal-close" type="button" aria-label="닫기">✕</button>
+      </div>
+      <div id="modal-body" class="modal-body"></div>
+    </div>
+  </div>
+
+  <!-- ============================================
+       3. FOOTER
+  ============================================ -->
+  <footer id="app-footer">
+    <div class="footer-inner">
+      <div class="footer-links">
+        <a href="#" id="footer-link-about" data-i18n="footer.about">회사 안내</a>
+        <a href="#" id="footer-link-feedback" data-i18n="footer.feedback">회사 위치</a>
+        <a href="#" id="footer-link-privacy" data-i18n="footer.privacy">개인정보처리방침</a>
+      </div>
+      <p class="footer-legal" data-i18n="footer.legal">© 2026 코드깨비 CodeGGaebi. 코딩이 마법처럼 쉬워지는 경험.</p>
+    </div>
+  </footer>
+
+  <!-- 의존성 순서대로 로드 (theme/nav/tutor → quiz → dashboard → menu → app) -->
+  <script src="js/theme.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/tutor.js"></script>
+  <script src="js/editor.js"></script>
+  <script src="js/quiz.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/menu.js"></script>
+  <script src="js/coderain.js"></script>
+  <script src="js/home.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
